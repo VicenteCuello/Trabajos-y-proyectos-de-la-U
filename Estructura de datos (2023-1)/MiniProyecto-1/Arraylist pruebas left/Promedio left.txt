@@ -1,0 +1,21 @@
+Promedio de pruebas insert_left:
+Para n=10000 y b=1: 4,25 ms
+Para n=10000 y b=64: 4,05 ms
+Para n=10000 y b=128: 4,1 ms
+Para n=10000 y b=512: 5,1 ms
+Para n=10000 y b=1024: 5 ms
+Para n=100000 y b=1: 43,7 ms
+Para n=100000 y b=64: 44,05 ms
+Para n=100000 y b=128: 44,3 ms
+Para n=100000 y b=512: 53,25 ms
+Para n=100000 y b=1024: 54,35 ms
+Para n=1000000 y b=1: 459,1 ms
+Para n=1000000 y b=64: 459,9 ms
+Para n=1000000 y b=128: 458,1 ms
+Para n=1000000 y b=512: 547,95 ms
+Para n=1000000 y b=1024: 552,25 ms
+Para n=10000000 y b=1: 4588,55 ms
+Para n=10000000 y b=64: 4611,5 ms
+Para n=10000000 y b=128: 4611,45 ms
+Para n=10000000 y b=512: 5507 ms
+Para n=10000000 y b=1024: 5534,05 ms

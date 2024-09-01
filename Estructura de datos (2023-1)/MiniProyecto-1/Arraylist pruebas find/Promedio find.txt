@@ -1,0 +1,21 @@
+Promedio de pruebas find:
+Para n=10000 y b=1: 0,05 ms
+Para n=10000 y b=64: 1,35 ms
+Para n=10000 y b=128: 3 ms
+Para n=10000 y b=512: 10,1 ms
+Para n=10000 y b=1024: 19,35 ms
+Para n=100000 y b=1: 6,65 ms
+Para n=100000 y b=64: 19,3 ms
+Para n=100000 y b=128: 31,65 ms
+Para n=100000 y b=512: 104,45 ms
+Para n=100000 y b=1024: 199,3 ms
+Para n=1000000 y b=1: 76,85 ms
+Para n=1000000 y b=64: 208,98 ms
+Para n=1000000 y b=128: 326,9 ms
+Para n=1000000 y b=512: 1056,8 ms
+Para n=1000000 y b=1024: 2010,35 ms
+Para n=10000000 y b=1: 797,75 ms
+Para n=10000000 y b=64: 2099,5 ms
+Para n=10000000 y b=128: 3290,65 ms
+Para n=10000000 y b=512: 10586,35 ms
+Para n=10000000 y b=1024: 20037,25 ms

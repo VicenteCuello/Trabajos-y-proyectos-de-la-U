@@ -1,0 +1,5 @@
+Promedio de pruebas insert_left con b=10000001:
+Con n=10000 : 38,1 ms
+Con n=100000 : 424,5 ms
+Con n=1000000 : 4357,35 ms
+Con n=10000000 : 50824,75 ms

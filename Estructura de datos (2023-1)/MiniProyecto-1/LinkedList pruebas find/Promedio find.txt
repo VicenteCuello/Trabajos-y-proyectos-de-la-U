@@ -1,0 +1,5 @@
+Promedio de pruebas find:
+Con n=10000 : 235,7 ms
+Con n=100000 : 101,9 ms
+Con n=1000000 : 106,05 ms
+Con n=10000000 : 154 ms
