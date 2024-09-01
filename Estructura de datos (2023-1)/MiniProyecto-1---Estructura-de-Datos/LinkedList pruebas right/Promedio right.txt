@@ -1,0 +1,5 @@
+Promedio de pruebas insert_right:
+Con n=10000 : 0 ms
+Con n=100000 : 2,05 ms
+Con n=1000000 : 25,3 ms
+Con n=10000000 : 258,9 ms
