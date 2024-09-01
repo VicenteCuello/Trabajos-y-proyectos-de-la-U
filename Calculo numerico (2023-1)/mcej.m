@@ -1,0 +1,40 @@
+% Datos de temperatura
+H = [0,2,4,6,8,10,12,14,16,18,20,22,24];
+Temperatura = [8,9,9,10,10,14,15,16,15,14,11,11,9];
+
+% Ajuste de los datos utilizando el modelo f(H) = a0 + a1H + a2H^2
+X1 = [ones(size(H')), H', H'.^2];
+coef1 = X1\Temperatura';
+
+% Ajuste de los datos utilizando el modelo g(H) = c1+c2*cos((2*pi/24)*H)+c3*sin((2*pi/24)*H)
+X2 = [ones(size(H')), cos((2*pi/24)*H'), sin((2*pi/24)*H')];
+coef2 = X2\Temperatura';
+
+% Evaluación de los modelos en 200 puntos equidistantes entre 0 y 24
+H_eval = linspace(0, 24, 200);
+f_eval = coef1(1) + coef1(2)*H_eval + coef1(3)*H_eval.^2;
+g_eval = coef2(1) + coef2(2)*cos((2*pi/24)*H_eval) + coef2(3)*sin((2*pi/24)*H_eval);
+
+% Gráfico de los datos y los modelos ajustados
+figure;
+plot(H, Temperatura, 'o', 'MarkerSize', 8); hold on;
+plot(H_eval, f_eval, 'r-', 'LineWidth', 1.5);
+plot(H_eval, g_eval, 'b-', 'LineWidth', 1.5);
+xlabel('Hora (H)');
+ylabel('Temperatura (°C)');
+legend('Datos', 'f(H) = a0 + a1H + a2H^2', 'g(H) = c1 + c2*cos((2\pi/24)*H) + c3*sin((2\pi/24)*H)');
+title('Ajuste de datos de temperatura');
+
+% Comentario: Comparación de los modelos
+% El modelo que ajusta mejor los datos de la tabla depende de diversos factores,
+% como la forma de los datos y la elección de los criterios de ajuste.
+% En este caso, puedes comparar la bondad de ajuste de ambos modelos mediante
+% métricas como el error cuadrático medio (MSE) o el coeficiente de determinación (R^2).
+
+% Cálculo de la temperatura a las 13:00 horas
+H_13 = 13;
+f_13 = coef1(1) + coef1(2)*H_13 + coef1(3)*H_13^2;
+g_13 = coef2(1) + coef2(2)*cos((2*pi/24)*H_13) + coef2(3)*sin((2*pi/24)*H_13);
+
+disp(['La temperatura a las 13:00 horas según el modelo f(H) es: ' num2str(f_13) '°C']);
+disp(['La temperatura a las 13:00 horas según el modelo g(H) es: ' num2str(g_13) '°C']);
