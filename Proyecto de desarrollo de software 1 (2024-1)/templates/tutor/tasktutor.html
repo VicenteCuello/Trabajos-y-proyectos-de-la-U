@@ -1,0 +1,136 @@
+{% extends "tutor/base.html" %}
+
+
+{% block title %}{{task.name}}{% endblock %}
+
+
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-0">
+    <h3 class="fw-bold align-middle">{{task.name}}</h3>
+
+    <div class="d-flex">
+
+        <form action="{{url_for('tutor.task_post')}}" method="POST" class="mx-1">
+
+            {% if state=="SUBMISSION PERIOD" %}
+            <button type="submit" class="btn btn-primary align-middle" name="end_submission_period">Terminar periodo de
+                entrega</button>
+
+            {% elif state=="REVIEW PERIOD" %}
+            <button type="submit" class="btn btn-primary align-middle" name="end_review_period">Terminar periodo de
+                revisiones</button>
+
+            {% elif state=="COMPLETED" %}
+
+            <a href="{{url_for('tutor.task_submissions',course_id = task.course_id ,task_id = task.id)}}"
+                class="btn btn-primary mx-1">Ver discrepancia de revisiones</a>
+
+            {% endif %}
+
+            <input type="hidden" name="task_id" value="{{task.id}}">
+        </form>
+
+
+        {% if state!="COMPLETED" %}
+        <form action="{{url_for('tutor.edit_task', task_id = task.id)}}" class="aling-middle mx-1">
+            <button type="submit" class="btn btn-warning me-2">Editar tarea</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
+    <div class="col-auto mr-5">
+        <span class="fw-bold d-inline">Fecha de entrega: </span>
+        <span class="d-inline">{{task.deadline_date}}</span>
+    </div>
+    <div class="col-auto mr-5">
+        <span class="fw-bold d-inline">Fecha límite de revisión: </span>
+        <span class="d-inline">{{task.review_deadline_date}}</span>
+    </div>
+    <div class="col-auto mr-5">
+        <span class="fw-bold d-inline">Puntaje máximo: </span>
+        <span class="d-inline">{{'%0.2f' % task_max_score}}</span>
+    </div>
+</div>
+
+<hr>
+
+<p>
+    {{task.instructions}}
+</p>
+
+<hr>
+<div class="my-4">
+    <div class="mb-3">
+        <h4 class="fw-bold">Criterios</h4>
+    </div>
+    <hr>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Criterio</th>
+                <th scope="col">Descripción</th>
+                <th scope="col" style="width: 8%;">Puntaje máximo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for criterion in task.criteria%}
+            <tr>
+                <th scope="row">{{criterion.name}}</th>
+                <td>{{criterion.description}}</td>
+                <td>{{'%0.2f' % criterion.max_score}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-0">
+    <h4 class="fw-bold my-1 align-middle">Entregas</h4>
+</div>
+<hr>
+<div class="list-group">
+    {%for submission in task.submissions%}
+    <{% if submission.reviewed_by_tutor==True %}a{% else %}div{% endif %}
+        href="{{url_for('tutor.submission_points', submission_id = submission.id)}}"
+        class="list-group-item list-group-item-action">
+
+        <div class="row mb-0">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <span class="fw-bold d-inline">{{submission.student.name}}</span>
+
+                {% if state=="SUBMISSION PERIOD" %}
+                <form action="{{url_for('tutor.task_post', task_id = task.id)}}" method="post">
+                    <button type="submit" name="delete_submission" class="btn btn-danger">Eliminar entrega</button>
+                    <input type="hidden" name="task_id" value="{{task.id}}">
+                    <input type="hidden" name="submission_id" value="{{submission.id}}">
+                </form>
+                {% elif state=="COMPLETED"%}
+                <div>
+                    <span class="fw-bold d-inline">Calificación:</span>
+                    {% if submission.reviewed_by_tutor == True %}
+                    <span class="d-inline">{{'%0.2f'
+                        %
+                        task_tutor_score_of_student(submission.task,submission.student)}} / {{task_max_score}}</span>
+                    {% else %}
+                    <span class="d-inline">Sin calificar</span>
+                    {% endif %}
+                </div>
+
+                {% endif %}
+            </div>
+
+        </div>
+    </{% if submission.reviewed_by_tutor==True %}a{% else %}div{% endif %}>
+    {% endfor %}
+</div>
+<hr>
+<a href="{{url_for('tutor.course',course_id = task.course_id )}}" class="btn btn-secondary mt-2">Volver</a>
+
+{% endblock %}

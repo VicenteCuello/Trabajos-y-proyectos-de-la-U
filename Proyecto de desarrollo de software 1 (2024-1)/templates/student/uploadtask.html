@@ -1,0 +1,221 @@
+{% extends "student/base.html" %}
+
+{% block title %}{{task.name}}{% endblock %}
+
+{% block content %}
+
+<h3 class="fw-bold">{{task.name}}</h3>
+
+<hr>
+
+<div class="row">
+
+    <div class="col-auto mr-5">
+        <span class="fw-bold d-inline">Fecha de entrega: </span>
+        <!--Ver como se llama esto en el diccionario-->
+        <span class="d-inline">{{task.deadline_date}}</span>
+    </div>
+
+    <div class="col-auto mr-5">
+        <span class="fw-bold d-inline">Puntos:</span>
+        <!--Ver como se llama esto en el diccionario-->
+        <span class="d-inline">{{'%0.2f' % task_max_score}}</span>
+    </div>
+
+    <div class="col-auto mr-5">
+        <span class="fw-bold d-inline">Estado:</span>
+        <span class="d-inline">{{estado}}</span>
+    </div>
+
+</div>
+
+<hr>
+
+<!--Ver como se llama esto en el diccionario-->
+<p>{{task.instructions}}</p>
+
+
+{% if estado == 'PENDIENTE' %}
+<form action="{{url_for('student.task_post',task_id=task.id)}}" method="post">
+    <div class="form-floating">
+
+        <textarea class="form-control" name="submission_url" id="floatingTextarea" style="height: 200px; resize: none;"
+            required></textarea>
+
+        <label for="floatingTextarea">Ingresa aquí el url de tu entrega.</label>
+
+    </div>
+    <div class="text-end my-3">
+        <button type="submit" class="btn btn-primary btn-md ">Enviar</button>
+        <a href="{{url_for('student.course', course_id = task.course.id)}}" class="btn btn-danger btn-md ">Cancelar</a>
+    </div>
+</form>
+
+<div class="my-4">
+    <div class="mb-3">
+        <h3 class="fw-bold">Criterios</h3>
+    </div>
+    <hr>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col">{{Criterio}}</th>
+                <th scope="col">Descripción</th>
+                <th scope="col" style="width: 8%;">Puntaje máximo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for criterion in task.criteria%}
+            <tr>
+                <th scope="row">{{criterion.name}}</th>
+                <td>{{criterion.description}}</td>
+                <td>{{'%0.2f' % criterion.max_score}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th scope="row" colspan="2">Total</th>
+                <td>{{'%0.2f' % task_max_score}}</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% endif %}
+
+{% if estado == 'FUERA DE PLAZO' %}
+<div class="my-4">
+    <div class="mb-3">
+        <h3 class="fw-bold">Criterios</h3>
+    </div>
+    <hr>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col">{{Criterio}}</th>
+                <th scope="col">Descripción</th>
+                <th scope="col" style="width: 8%;">Puntaje máximo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for criterion in task.criteria%}
+            <tr>
+                <th scope="row">{{criterion.name}}</th>
+                <td>{{criterion.description}}</td>
+                <td>{{'%0.2f' % criterion.max_score}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th scope="row" colspan="2">Total</th>
+                <td>{{'%0.2f' % task_max_score}}</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<hr>
+<div>
+    <h6 class="fw-normal">Actualmente el plazo de realización de esta tarea ya acabó
+                           y no se aceptan más entregas.</h6>
+</div>
+<hr>
+{% endif %}
+
+{% if estado == 'ENVIADO'%}
+<form action="{{url_for('student.task_post',task_id=task.id)}}">
+    <div class="form-floating">
+
+        <textarea class="form-control" name="submission_url" id="floatingTextarea" style="height: 200px; resize: none;"
+            disabled>{{submission.url}}</textarea>
+
+        <label for="floatingTextarea">url de tu entrega.</label>
+    </div>
+    <div class="my-4">
+        <div class="mb-3">
+            <h3 class="fw-bold">Criterios</h3>
+        </div>
+        <hr>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">{{Criterio}}</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col" style="width: 8%;">Puntaje máximo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for criterion in task.criteria%}
+                <tr>
+                    <th scope="row">{{criterion.name}}</th>
+                    <td>{{criterion.description}}</td>
+                    <td>{{'%0.2f' % criterion.max_score}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="row" colspan="2">Total</th>
+                    <td>{{'%0.2f' % task_max_score}}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</form>
+<div class="text-end my-3">
+    <a href="{{url_for('student.course', course_id = task.course.id)}}" class="btn btn-secondary btn-md">Volver</a>
+</div>
+{% endif %}
+
+{% if estado == 'REVISADO'%}
+<form action="{{url_for('student.task_post',task_id=task.id)}}">
+    <div class="form-floating">
+
+        <textarea class="form-control" name="submission_url" id="floatingTextarea" style="height: 200px; resize: none;"
+            disabled>{{submission.url}}</textarea>
+
+        <label for="floatingTextarea">url de tu entrega.</label>
+    </div>
+</form>
+
+<div class="my-4">
+    <div class="mb-3">
+        <h3 class="fw-bold">Evaluación</h3>
+    </div>
+    <hr>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Criterio</th>
+                <th scope="col">Descripción</th>
+                <th scope="col" style="width: 8%;">Puntaje máximo</th>
+                <th scope="col" style="width: 8%;">Puntaje obtenido</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for criterion in task.criteria%}
+            <tr>
+                <th scope="row">{{criterion.name}}</th>
+                <td>{{criterion.description}}</td>
+                <td>{{'%0.2f' % criterion.max_score}}</td>
+                <td>{{'%0.2f' % criterion_score(criterion)}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th scope="row" colspan="2">Total</th>
+                <td>{{'%0.2f' % task_max_score}}</td>
+                <td>{{'%0.2f' % task_score}}</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div class="text-end my-3">
+    <a href="{{url_for('student.course', course_id = task.course.id)}}" class="btn btn-secondary btn-md">Volver</a>
+</div>
+
+{% endif %}
+
+{% endblock %}

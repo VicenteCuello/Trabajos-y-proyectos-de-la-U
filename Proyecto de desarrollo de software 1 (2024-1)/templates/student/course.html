@@ -1,0 +1,34 @@
+{% extends "student/base.html" %}
+
+
+{% block title %}{{course.name}}{% endblock %}
+
+{% block content %}
+<h1>Tareas</h1>
+<div class="list-group">
+    {%for task in course.tasks %}
+
+    <!-- ruta = -->
+
+    <a href="{{url_for('student.task', task_id = task.id)}}" class="list-group-item list-group-item-action">
+
+        <div class="containerr">
+            <div class="row align-items-start">
+                <div class="col">
+                    <span class="fw-bold">{{task.name}}</span>
+                </div>
+                <div class="col text-end mx-5">
+                    <span class="fw-bold">Fecha de entrega: </span>
+                    <span>{{task.deadline_date}}</span>
+                </div>
+                <div class="col text-end mx-5">
+                    <span class="fw-bold">Estado: </span>
+                    <span>{{task_completion_status(task)}}</span>
+                </div>
+            </div>
+        </div>
+    </a>
+
+    {% endfor %}
+</div>
+{% endblock %}

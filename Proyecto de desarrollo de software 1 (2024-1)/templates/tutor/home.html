@@ -1,0 +1,59 @@
+{% extends "tutor/base.html" %}
+
+{% block title %}Home{% endblock %}
+
+
+
+{% block content %}
+<!-- ventana emergente de crear curso (modal window)-->
+<div class="modal fade" id="createcourseModal" tabindex="-1" aria-labelledby="createcourseModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="createcourseModalLabel">Crear curso</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{url_for('tutor.home_post')}}" method="post">
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="new_course_name" name="name" required>
+                        <label for="new_course_name">Nombre del curso</label>
+                    </div>
+
+                    <input type="hidden" name="form_type" value="create_course">
+                    <button name="action" value="create" type="submit" class="btn btn-primary">Crear</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Titulo y botón-->
+<div class="d-flex justify-content-between align-items-center">
+    <h2>Cursos</h2>
+    <div class="d-flex">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createcourseModal">Crear
+            Curso</button>
+    </div>
+</div>
+<hr>
+<!--Generación de tarjetas cursos-->
+<div class="row">
+    {% for course in courses%}
+    <div class="col-sm-3 my-3 mb-sm-0">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title fw-bold mb-4">{{course.name}}</h5>
+                <a href="{{url_for('tutor.course', course_id = course.id)}}" class="btn btn-primary mb-1">Ingresar</a>
+                <a href="{{url_for('tutor.editcourse', course_id = course.id)}}" class="btn btn-warning mb-1">Editar</a>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
