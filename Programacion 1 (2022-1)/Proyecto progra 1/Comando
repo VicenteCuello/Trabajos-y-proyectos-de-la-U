@@ -1,0 +1,3 @@
+Para abrir proyecto.c :
+gcc proyecto.c -lSDL2 -lSDL2_image -lSDL2_ttf -lm -lSDL2_mixer
+
